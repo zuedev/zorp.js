@@ -1,0 +1,21 @@
+{
+  "name": "zorp",
+  "version": "1.0.0",
+  "description": "Silly little AI fella, making your code more human.",
+  "main": "main.js",
+  "scripts": {
+    "example": "node example.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "openai": "^3.2.1"
+  },
+  "type": "module",
+  "devDependencies": {
+    "jest": "^29.4.3"
+  }
+}
