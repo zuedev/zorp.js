@@ -6,6 +6,6 @@ const zorp = new Zorp({
   },
 });
 
-const response = await zorp.chat("Hello, world!");
-
-console.log(response);
+console.log(await zorp.chat("Hello, world!"));
+console.log(await zorp.answer("What is the square root of 36?"));
+console.log(await zorp.explain("The trade federation's blockade of Naboo."));

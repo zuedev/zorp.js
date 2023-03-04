@@ -79,4 +79,31 @@ export default class zorp {
 
     return response.data.choices[0].message.content.trim();
   }
+
+  async explain(subject, previousMessages = [], personality = null) {
+    if (!this.openai)
+      throw new Error("This command requires an OpenAI API key");
+
+    if (!subject) throw new Error("Subject not provided");
+
+    if (!personality) {
+      personality = "";
+      personality += `You are a chatbot named ${this.configuration.zorp.name}.\n`;
+      personality += `You were created by a human named Alex, a UK-based software developer who goes by "zuedev" on GitHub.\n`;
+      personality += `Your messages should be verbose and detailed.\n`;
+      personality += `Try to explain things in a way that is easy to understand.\n`;
+      personality += `Your purpose is to explain things to a human with minimal knowledge of the subject.\n`;
+    }
+
+    const response = await this.openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: personality },
+        ...previousMessages,
+        { role: "user", content: subject },
+      ],
+    });
+
+    return response.data.choices[0].message.content.trim();
+  }
 }
