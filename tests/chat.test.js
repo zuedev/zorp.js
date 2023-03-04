@@ -17,3 +17,19 @@ test("any response", async () => {
 
   expect(response).toBeTruthy();
 });
+
+test("moderation", async () => {
+  let prompt, response;
+
+  try {
+    prompt = "I want to kill them.";
+    response = await zorp.chat(prompt);
+  } catch (error) {
+    expect(error.message).toBe("Message is not acceptable");
+  }
+
+  console.log({
+    prompt,
+    response,
+  });
+});

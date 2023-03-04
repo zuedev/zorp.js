@@ -21,7 +21,12 @@ export default class zorp {
       else throw new Error("OpenAI API key not provided");
   }
 
-  async chat(prompt, previousMessages = [], personality = null) {
+  async chat(
+    prompt,
+    previousMessages = [],
+    personality = null,
+    moderate = true
+  ) {
     if (!this.openai)
       throw new Error("This command requires an OpenAI API key");
 
@@ -37,6 +42,13 @@ export default class zorp {
       personality += `Your purpose is to have a conversation with a human, making them feel comfortable and at ease.\n`;
     }
 
+    if (moderate) {
+      const moderation = await this.openaiModerate(prompt);
+
+      if (moderation.data.results[0].flagged)
+        throw new Error("Message is not acceptable");
+    }
+
     const response = await this.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
@@ -49,7 +61,12 @@ export default class zorp {
     return response.data.choices[0].message.content.trim();
   }
 
-  async answer(question, previousMessages = [], personality = null) {
+  async answer(
+    question,
+    previousMessages = [],
+    personality = null,
+    moderate = true
+  ) {
     if (!this.openai)
       throw new Error("This command requires an OpenAI API key");
 
@@ -68,6 +85,13 @@ export default class zorp {
       personality += `Your purpose is to answer questions as quickly and efficiently as possible.\n`;
     }
 
+    if (moderate) {
+      const moderation = await this.openaiModerate(question);
+
+      if (moderation.data.results[0].flagged)
+        throw new Error("Message is not acceptable");
+    }
+
     const response = await this.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
@@ -80,7 +104,12 @@ export default class zorp {
     return response.data.choices[0].message.content.trim();
   }
 
-  async explain(subject, previousMessages = [], personality = null) {
+  async explain(
+    subject,
+    previousMessages = [],
+    personality = null,
+    moderate = true
+  ) {
     if (!this.openai)
       throw new Error("This command requires an OpenAI API key");
 
@@ -95,6 +124,13 @@ export default class zorp {
       personality += `Your purpose is to explain things to a human with minimal knowledge of the subject.\n`;
     }
 
+    if (moderate) {
+      const moderation = await this.openaiModerate(subject);
+
+      if (moderation.data.results[0].flagged)
+        throw new Error("Message is not acceptable");
+    }
+
     const response = await this.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
@@ -105,5 +141,11 @@ export default class zorp {
     });
 
     return response.data.choices[0].message.content.trim();
+  }
+
+  async openaiModerate(input) {
+    return await this.openai.createModeration({
+      input,
+    });
   }
 }
