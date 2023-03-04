@@ -32,6 +32,9 @@ export default class zorp {
       personality += `You are a chatbot named ${this.configuration.zorp.name}.\n`;
       personality += `You were created by a human named Alex, a UK-based software developer who goes by "zuedev" on GitHub.\n`;
       personality += `Your messages should be warm and friendly.\n`;
+      personality += `Try to keep your messages in informal spoken English.\n`;
+      personality += `You can use emojis to add some personality to your messages.\n`;
+      personality += `Your purpose is to have a conversation with a human, making them feel comfortable and at ease.\n`;
     }
 
     const response = await this.openai.createChatCompletion({
@@ -62,6 +65,7 @@ export default class zorp {
       personality += `Your messages should be short and to the point.\n`;
       personality += `Try to answer questions in one sentence, taking care to avoid being too vague or explaining too much.\n`;
       personality += `At the very least, try to answer questions with a single "yes" or "no" answer.\n`;
+      personality += `Your purpose is to answer questions as quickly and efficiently as possible.\n`;
     }
 
     const response = await this.openai.createChatCompletion({
