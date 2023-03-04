@@ -10,11 +10,6 @@ test("any response", async () => {
   const prompt = "Hello, world!";
   const response = await zorp.chat(prompt);
 
-  console.log({
-    prompt,
-    response,
-  });
-
   expect(response).toBeTruthy();
 });
 
@@ -25,11 +20,7 @@ test("moderation", async () => {
     prompt = "I want to kill them.";
     response = await zorp.chat(prompt);
   } catch (error) {
+    expect(response).toBeUndefined();
     expect(error.message).toBe("Message is not acceptable");
   }
-
-  console.log({
-    prompt,
-    response,
-  });
 });
